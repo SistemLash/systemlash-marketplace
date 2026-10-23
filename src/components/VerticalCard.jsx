@@ -46,10 +46,19 @@ const VerticalCard = forwardRef(function VerticalCard({ v, onQuiero }, ref) {
 
             <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16, paddingTop: 16, borderTop: "1px solid var(--line)" }}>
               <div>
-                <div className="eyebrow" style={{ fontSize: 10 }}>INSTALACIÓN + MENSUALIDAD</div>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: 20, marginTop: 4 }}>
-                  {fmt(v.precioCompra)} <span style={{ color: "var(--text-3)", fontSize: 14 }}>+ {fmt(v.precioMensual)}/mes</span>
-                </div>
+                {v.precioCompra != null ? (
+                  <>
+                    <div className="eyebrow" style={{ fontSize: 10 }}>INSTALACIÓN + MENSUALIDAD</div>
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 20, marginTop: 4 }}>
+                      {fmt(v.precioCompra)} <span style={{ color: "var(--text-3)", fontSize: 14 }}>+ {fmt(v.precioMensual)}/mes</span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="eyebrow" style={{ fontSize: 10 }}>PRECIO</div>
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 18, marginTop: 4 }}>Cotiza por WhatsApp</div>
+                  </>
+                )}
               </div>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                 <a href={v.demoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost btn-sm">Ver demo</a>
