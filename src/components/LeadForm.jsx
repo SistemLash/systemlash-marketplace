@@ -1,5 +1,6 @@
 import { forwardRef, useState, useEffect } from "react";
 import { WHATSAPP_NUMBER, VERTICALES } from "../data/config.js";
+import { track } from "../utils/track.js";
 
 const LeadForm = forwardRef(function LeadForm({ interesSeleccionado }, ref) {
   const [nombre, setNombre] = useState("");
@@ -27,6 +28,7 @@ const LeadForm = forwardRef(function LeadForm({ interesSeleccionado }, ref) {
       (mensaje.trim() ? `\n\nMensaje: ${mensaje.trim()}` : "");
 
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(texto)}`;
+    track("form_enviado", interes);
     window.open(url, "_blank", "noopener,noreferrer");
   };
 

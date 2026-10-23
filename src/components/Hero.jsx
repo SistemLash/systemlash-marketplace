@@ -1,5 +1,6 @@
 import { WHATSAPP_NUMBER, VERTICALES } from "../data/config.js";
 import BayBoard from "./BayBoard.jsx";
+import { track } from "../utils/track.js";
 
 export default function Hero({ onSelectVertical }) {
   const primeraActiva = VERTICALES.find(v => v.estado === "activo");
@@ -21,11 +22,11 @@ export default function Hero({ onSelectVertical }) {
           </p>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             {primeraActiva && (
-              <a href={primeraActiva.demoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+              <a href={primeraActiva.demoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary" onClick={() => track("click_demo", primeraActiva.id)}>
                 Ver demo en vivo →
               </a>
             )}
-            <a href={waHref} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
+            <a href={waHref} target="_blank" rel="noopener noreferrer" className="btn btn-ghost" onClick={() => track("click_whatsapp", "hero")}>
               Hablar por WhatsApp
             </a>
           </div>

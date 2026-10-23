@@ -1,17 +1,20 @@
 import { useState } from "react";
+import { track } from "../utils/track.js";
 
 export default function ShareBar() {
   const [copiado, setCopiado] = useState(false);
-  const url = typeof window !== "undefined" ? window.location.href : "https://systemlash.com";
+  const url = typeof window !== "undefined" ? `${window.location.origin}/?ref=compartido` : "https://systemlash.com";
   const textoCompartir = "Encontré este sistema para negocios, échale un ojo:";
 
   const puedeCompartirNativo = typeof navigator !== "undefined" && !!navigator.share;
 
   const compartirNativo = () => {
+    track("compartir", "nativo");
     navigator.share({ title: "System LASH", text: textoCompartir, url }).catch(() => {});
   };
 
   const copiarEnlace = async () => {
+    track("compartir", "copiar");
     try {
       await navigator.clipboard.writeText(url);
       setCopiado(true);
@@ -28,7 +31,7 @@ export default function ShareBar() {
       <div className="eyebrow" style={{ marginBottom: 6 }}>¿LE SIRVE A ALGUIEN MÁS?</div>
       <p style={{ margin: "0 0 18px", color: "var(--text-2)", fontSize: 14 }}>Compártelo — entre más talleres lo conozcan, más rápido llega tu bahía.</p>
       <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
-        <a href={facebookHref} target="_blank" rel="noopener noreferrer" className="btn btn-ghost btn-sm">
+        <a href={facebookHref} target="_blank" rel="noopener noreferrer" className="btn btn-ghost btn-sm" onClick={() => track("compartir", "facebook")}>
           Compartir en Facebook
         </a>
         {puedeCompartirNativo && (

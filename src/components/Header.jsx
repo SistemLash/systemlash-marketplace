@@ -1,4 +1,5 @@
 import { WHATSAPP_NUMBER } from "../data/config.js";
+import { track } from "../utils/track.js";
 
 export default function Header() {
   const waHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hola, vi System LASH y quiero más información.")}`;
@@ -12,7 +13,7 @@ export default function Header() {
           </div>
           <span style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 15, letterSpacing: "0.04em" }}>SYSTEM LASH</span>
         </div>
-        <a href={waHref} target="_blank" rel="noopener noreferrer" className="btn btn-ghost btn-sm">
+        <a href={waHref} target="_blank" rel="noopener noreferrer" className="btn btn-ghost btn-sm" onClick={() => track("click_whatsapp", "header")}>
           WhatsApp
         </a>
       </div>

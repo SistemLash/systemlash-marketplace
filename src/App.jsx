@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { VERTICALES } from "./data/config.js";
 import Header from "./components/Header.jsx";
 import Hero from "./components/Hero.jsx";
@@ -6,9 +6,18 @@ import VerticalCard from "./components/VerticalCard.jsx";
 import LeadForm from "./components/LeadForm.jsx";
 import ShareBar from "./components/ShareBar.jsx";
 import Footer from "./components/Footer.jsx";
+import Stats from "./components/Stats.jsx";
+import { track, trackVisita } from "./utils/track.js";
 
 export default function App() {
   const [interesSeleccionado, setInteresSeleccionado] = useState(null);
+  const [verStats, setVerStats] = useState(() => window.location.hash.startsWith("#/stats"));
+  useEffect(() => {
+    const onHash = () => setVerStats(window.location.hash.startsWith("#/stats"));
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+  useEffect(() => { if (!verStats) trackVisita(); }, [verStats]);
   const cardRefs = useRef({});
   const formRef = useRef(null);
 
@@ -17,9 +26,12 @@ export default function App() {
   };
 
   const quiero = (vertical) => {
+    track("click_quiero", vertical.id);
     setInteresSeleccionado(vertical.id);
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  if (verStats) return <Stats />;
 
   return (
     <>

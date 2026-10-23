@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import { track } from "../utils/track.js";
 
 const fmt = (n) => n == null ? "" : `$${n.toLocaleString("es-MX")}`;
 
@@ -61,7 +62,7 @@ const VerticalCard = forwardRef(function VerticalCard({ v, onQuiero }, ref) {
                 )}
               </div>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                <a href={v.demoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost btn-sm">Ver demo</a>
+                <a href={v.demoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost btn-sm" onClick={() => track("click_demo", v.id)}>Ver demo</a>
                 <button onClick={() => onQuiero(v)} className="btn btn-primary btn-sm">Quiero este sistema</button>
               </div>
             </div>
