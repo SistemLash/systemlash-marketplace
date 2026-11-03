@@ -50,9 +50,8 @@ export const VERTICALES = [
     demoUrl: "https://systemlash-gps-demo.vercel.app/",
     demoUsuario: "demo",
     demoPassword: "Demo2026!",
-    // Pendiente: Luis define el precio. Mientras sea null la tarjeta dice "Cotiza por WhatsApp".
-    precioCompra: null,
-    precioMensual: null,
+    precioCompra: 5000,
+    precioMensual: 500,
   },
   {
     id: "contabilidad",
@@ -84,9 +83,8 @@ export const VERTICALES = [
     demoUrl: "https://systemlash-barberia.vercel.app/",
     demoUsuario: "demo@barberia.com",
     demoPassword: "Demo2026!",
-    // Pendiente: Luis define el precio. Mientras sea null la tarjeta dice "Cotiza por WhatsApp".
-    precioCompra: null,
-    precioMensual: null,
+    precioCompra: 5000,
+    precioMensual: 500,
   },
   {
     id: "refared",
