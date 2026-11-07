@@ -1,13 +1,34 @@
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import { track } from "../utils/track.js";
 
 const fmt = (n) => n == null ? "" : `$${n.toLocaleString("es-MX")}`;
 
-const VerticalCard = forwardRef(function VerticalCard({ v, onQuiero }, ref) {
+const VerticalCard = forwardRef(function VerticalCard({ v, onQuiero, resaltada }, ref) {
   const activo = v.estado === "activo";
+  const [copiado, setCopiado] = useState(false);
+
+  // Comparte el enlace directo a esta bahía (abre el marketplace ya posicionado aquí)
+  const compartir = async () => {
+    track("compartir", `bahia-${v.id}`);
+    const url = `${window.location.origin}/#${v.id}`;
+    const texto = `${v.nombre} — sistema para ${v.rubro.toLowerCase()}. Pruébalo gratis:`;
+    if (navigator.share) {
+      navigator.share({ title: `System LASH · ${v.nombre}`, text: texto, url }).catch(() => {});
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopiado(true);
+      setTimeout(() => setCopiado(false), 2000);
+    } catch { /* silencioso */ }
+  };
 
   return (
-    <div ref={ref} className="steel-panel" style={{ padding: 0, overflow: "hidden", scrollMarginTop: 90 }}>
+    <div ref={ref} className="steel-panel" style={{
+      padding: 0, overflow: "hidden", scrollMarginTop: 90,
+      transition: "box-shadow .4s ease, border-color .4s ease",
+      ...(resaltada ? { borderColor: "var(--red)", boxShadow: "0 0 0 2px var(--red), 0 0 28px rgba(226,20,31,0.35)" } : {}),
+    }}>
       {/* Encabezado tipo "orden de servicio" */}
       <div style={{
         display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -65,6 +86,7 @@ const VerticalCard = forwardRef(function VerticalCard({ v, onQuiero }, ref) {
                 {v.demoUrl && (
                   <a href={v.demoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost btn-sm" onClick={() => track("click_demo", v.id)}>Ver demo</a>
                 )}
+                <button onClick={compartir} className="btn btn-ghost btn-sm">{copiado ? "¡Enlace copiado!" : "Compartir"}</button>
                 <button onClick={() => onQuiero(v)} className="btn btn-primary btn-sm">Quiero este sistema</button>
               </div>
             </div>

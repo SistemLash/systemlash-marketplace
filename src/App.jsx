@@ -21,9 +21,26 @@ export default function App() {
   const cardRefs = useRef({});
   const formRef = useRef(null);
 
+  const [resaltada, setResaltada] = useState(null);
+
   const irABahia = (id) => {
     cardRefs.current[id]?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  // Enlace directo a una bahía: systemlash-marketplace.vercel.app/#barberia
+  useEffect(() => {
+    if (verStats) return;
+    const abrirDesdeHash = () => {
+      const id = decodeURIComponent(window.location.hash.slice(1));
+      if (!VERTICALES.some(v => v.id === id)) return;
+      setTimeout(() => irABahia(id), 250);
+      setResaltada(id);
+      setTimeout(() => setResaltada(r => (r === id ? null : r)), 3000);
+    };
+    abrirDesdeHash();
+    window.addEventListener("hashchange", abrirDesdeHash);
+    return () => window.removeEventListener("hashchange", abrirDesdeHash);
+  }, [verStats]);
 
   const quiero = (vertical) => {
     track("click_quiero", vertical.id);
@@ -41,7 +58,7 @@ export default function App() {
       <section className="container" style={{ display: "grid", gap: 16, padding: "8px 20px 40px" }}>
         <div className="eyebrow" style={{ padding: "0 4px" }}>BAHÍAS DISPONIBLES</div>
         {VERTICALES.map(v => (
-          <VerticalCard key={v.id} v={v} onQuiero={quiero} ref={el => (cardRefs.current[v.id] = el)} />
+          <VerticalCard key={v.id} v={v} onQuiero={quiero} resaltada={resaltada === v.id} ref={el => (cardRefs.current[v.id] = el)} />
         ))}
       </section>
 
